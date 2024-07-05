@@ -66,4 +66,15 @@ public class OpenAIRestTemplateConfig {
         });
         return restTemplate;
     }
+
+    @Bean
+    @Qualifier("hookRestTemplateLoad")
+    public RestTemplate hookRestTemplateLoad() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getInterceptors().add((request, body, execution) -> {
+            request.getHeaders().add("Content-Type", "application/json");
+            return execution.execute(request, body);
+        });
+        return restTemplate;
+    }
 }
